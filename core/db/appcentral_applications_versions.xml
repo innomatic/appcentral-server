@@ -1,0 +1,12 @@
+<?xml version='1.0'?>
+<database>
+
+    <table  name="appcentral_applications_versions">
+        <field  name="applicationid"    type="integer" notnull="1"/>
+        <field  name="version"  type="text" notnull="1"/>
+        <field  name="date" type="text"/>
+        <field  name="dependencies" type="text"/>
+        <field  name="suggestions"  type="text"/>
+    </table>
+
+</database>

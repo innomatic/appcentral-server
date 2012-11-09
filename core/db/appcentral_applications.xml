@@ -1,0 +1,15 @@
+<?xml version='1.0'?>
+<database>
+
+    <table  name="appcentral_applications">
+        <field  name="id"   type="integer"  notnull="1"/>
+        <field  name="appid"    type="text" notnull="1"/>
+        <field  name="description"  type="text"/>
+        <field  name="lastversion"  type="text"/>
+        <field  name="category" type="text"/>
+        <key    field="id"  type="unique"/>
+    </table>
+    
+    <sequence   name="appcentral_applications_id_seq"/>
+
+</database>

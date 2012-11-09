@@ -1,0 +1,104 @@
+<?xml version='1.0'?>
+<application>
+	<definition>
+		<idname>appcentral-server</idname>
+		<release>
+			<version>2.2</version>
+			<date>2009/02/26</date>
+			<changesfile>CHANGES</changesfile>
+		</release>
+		<description>AppCentral repository server.</description>
+		<category>innomatic</category>
+		<iconfile></iconfile>
+		<dependencies>
+			<dependency>innomatic[5.0]</dependency>
+		</dependencies>
+		<options>
+			<!-- <option></option> -->
+		</options>
+		<legal>
+			<author>
+				<name>Innoteam</name>
+				<email>info@innomatic.org</email>
+				<web>http://www.innomatic.org/</web>
+			</author>
+			<copyright>Copyright (c) 2000-2009 Innoteam</copyright>
+			<license>Commercial</license>
+			<licensefile>LICENSE</licensefile>
+		</legal>
+		<support>
+			<supportemail>support@innomatic.org</supportemail>
+			<bugsemail>bugs@innomatic.org</bugsemail>
+			<maintainer>
+				<name>Alex Pagnoni</name>
+				<email>alex.pagnoni@innoteam.it</email>
+			</maintainer>
+		</support>
+	</definition>
+
+	<components>
+
+		<rootpanel name="appcentral-server"
+			file="appcentral-server.php" themeicon="nfs_unmount"
+			themeicontype="devices" catalog="appcentral-server::misc"
+			category="innomatic" />
+
+		<class name="appcentral/server/AppCentralApplication.php" />
+		<class name="appcentral/server/AppCentralRepository.php" />
+
+		<catalog name="appcentral-server" />
+
+		<roottable name="appcentral_applications"
+			file="appcentral_applications.xml" />
+
+		<roottable name="appcentral_applications_versions"
+			file="appcentral_applications_versions.xml" />
+
+		<roottable name="appcentral_reps" file="appcentral_reps.xml" />
+
+		<roottable name="appcentral_reps_access"
+			file="appcentral_reps_access.xml" />
+
+		<roottable name="appcentral_reps_applications"
+			file="appcentral_reps_applications.xml" />
+
+		<tempdir name="appcentral-server" />
+
+		<hookhandler name="appcentral-server"
+			file="AppcentralServerHookHandler.php" />
+
+		<hook
+			name="appcentral-server.innomatic.webservicesprofile.remove.profileremoved"
+			functionapplication="innomatic" function="webservicesprofile.remove"
+			event="profileremoved" hookhandler="AppcentralServerHookHandler.php"
+			hookmethod="AppcentralServerHookHandler::innomatic_webservicesprofile_remove_profileremoved" />
+
+		<webserviceshandler name="appcentral-server"
+			file="Appcentral-serverWebServicesHandler.php" />
+
+		<webservicesmethod
+			name="appcentral-server.list_available_repositories"
+			function="AppcentralServerWebServicesHandler::list_available_repositories"
+			handler="appcentral-server" catalog="appcentral-server::misc" />
+
+		<webservicesmethod
+			name="appcentral-server.list_available_applications"
+			function="AppcentralServerWebServicesHandler::list_available_applications"
+			handler="appcentral-server" catalog="appcentral-server::misc" />
+
+		<webservicesmethod
+			name="appcentral-server.list_available_application_versions"
+			function="AppcentralServerWebServicesHandler::list_available_application_versions"
+			handler="appcentral-server" catalog="appcentral-server::misc" />
+
+		<webservicesmethod name="appcentral-server.retrieve_application"
+			function="AppcentralServerWebServicesHandler::retrieve_application"
+			handler="appcentral-server" catalog="appcentral-server::misc" />
+
+		<webservicesmethod
+			name="appcentral-server.retrieve_appcentral_client"
+			function="AppcentralServerWebServicesHandler::retrieve_appcentral_client"
+			handler="appcentral-server" catalog="appcentral-server::misc" />
+
+	</components>
+</application>

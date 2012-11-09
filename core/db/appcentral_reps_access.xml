@@ -1,0 +1,9 @@
+<?xml version='1.0'?>
+<database>
+
+    <table  name="appcentral_reps_access">
+        <field  name="repositoryid"   type="integer"  notnull="1"/>
+        <field  name="profileid"    type="integer" notnull="1"/>
+    </table>
+
+</database>

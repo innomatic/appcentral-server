@@ -1,0 +1,14 @@
+<?xml version='1.0'?>
+<database>
+
+    <table  name="appcentral_reps">
+        <field  name="id"   type="integer"  notnull="1"/>
+        <field  name="name" type="text" notnull="1"/>
+        <field  name="description"  type="text"/>
+        <field  name="logevents"    type="boolean"/>
+        <key    field="id"  type="unique"/>
+    </table>
+    
+    <sequence   name="appcentral_reps_id_seq"/>
+
+</database>
