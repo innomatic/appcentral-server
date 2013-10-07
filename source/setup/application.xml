@@ -3,8 +3,8 @@
 	<definition>
 		<idname>appcentral-server</idname>
 		<release>
-			<version>2.2</version>
-			<date>2009/02/26</date>
+			<version>2.3</version>
+			<date>2013/10/07</date>
 			<changesfile>CHANGES</changesfile>
 		</release>
 		<description>AppCentral repository server.</description>
@@ -22,7 +22,7 @@
 				<email>info@innomatic.org</email>
 				<web>http://www.innomatic.org/</web>
 			</author>
-			<copyright>Copyright (c) 2000-2009 Innoteam</copyright>
+			<copyright>Copyright (c) 2000-2013 Innoteam Srl</copyright>
 			<license>Commercial</license>
 			<licensefile>LICENSE</licensefile>
 		</legal>
