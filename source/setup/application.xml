@@ -38,10 +38,13 @@
 
 	<components>
 
+		<rootgroup name="appcentral"
+			catalog="appcentral-server::misc" />
+
 		<rootpanel name="appcentral-server"
 			file="appcentral-server.php" themeicon="nfs_unmount"
 			themeicontype="devices" catalog="appcentral-server::misc"
-			category="innomatic" />
+			category="appcentral" />
 
 		<class name="appcentral/server/AppCentralApplication.php" />
 		<class name="appcentral/server/AppCentralRepository.php" />
