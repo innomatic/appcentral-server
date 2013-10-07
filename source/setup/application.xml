@@ -18,17 +18,17 @@
 		</options>
 		<legal>
 			<author>
-				<name>Innoteam</name>
-				<email>info@innomatic.org</email>
-				<web>http://www.innomatic.org/</web>
+				<name>Innoteam S.r.l.</name>
+				<email>info@innoteam.it</email>
+				<web>http://www.innoteam.it/</web>
 			</author>
 			<copyright>Copyright (c) 2000-2013 Innoteam Srl</copyright>
 			<license>Commercial</license>
 			<licensefile>LICENSE</licensefile>
 		</legal>
 		<support>
-			<supportemail>support@innomatic.org</supportemail>
-			<bugsemail>bugs@innomatic.org</bugsemail>
+			<supportemail>helpdesk@innoteam.it</supportemail>
+			<bugsemail>helpdesk@innoteam.it</bugsemail>
 			<maintainer>
 				<name>Alex Pagnoni</name>
 				<email>alex.pagnoni@innoteam.it</email>
