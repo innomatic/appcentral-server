@@ -212,20 +212,45 @@ function main_default($eventData) {
 
 		$row = 0;
 
-		while (!$reps_query->eof) {
-			$main_tb = array();
-			$main_tb['applications'] = array('label' => $gLocale->getStr('repository_applications.button'), 'horiz' => true, 'themeimage' => 'view_detailed', 'action' => WuiEventsCall::buildEventsCallString('', array(array('view', 'repositoryapplications', array('id' => $reps_query->getFields('id'))))));
-
-			$main_tb['profiles'] = array('label' => $gLocale->getStr('repository_profiles.button'), 'horiz' => true, 'themeimage' => 'view_detailed', 'action' => WuiEventsCall::buildEventsCallString('', array(array('view', 'repositoryprofiles', array('id' => $reps_query->getFields('id'))))));
-
-			$main_tb['edit'] = array('label' => $gLocale->getStr('edit_repository.button'), 'horiz' => true, 'themeimage' => 'edit', 'action' => WuiEventsCall::buildEventsCallString('', array(array('view', 'editrepository', array('id' => $reps_query->getFields('id'))))));
+		while (!$reps_query->eof) {			
+			$toolbar = '<horizgroup row="'.$row.'" col="2"><children>';
+			
+			$toolbar .= '<button><name>applications</name><args>
+					<label>'.WuiXml::cdata($gLocale->getStr('repository_applications.button')).'</label>
+					<themeimage>view_detailed</themeimage>
+					<horiz>true</horiz>
+					<action>'.WuiXml::cdata(WuiEventsCall::buildEventsCallString('', array(array('view', 'repositoryapplications', array('id' => $reps_query->getFields('id')))))).'</action></args></button>';
+			
+			$toolbar .= '<button><name>profiles</name><args>
+					<label>'.WuiXml::cdata($gLocale->getStr('repository_profiles.button')).'</label>
+					<themeimage>view_detailed</themeimage>
+					<horiz>true</horiz>
+					<action>'.WuiXml::cdata(WuiEventsCall::buildEventsCallString('', array(array('view', 'repositoryprofiles', array('id' => $reps_query->getFields('id')))))).'</action></args></button>';
+			
+			$toolbar .= '<button><name>edit</name><args>
+					<label>'.WuiXml::cdata($gLocale->getStr('edit_repository.button')).'</label>
+					<themeimage>edit</themeimage>
+					<horiz>true</horiz>
+					<action>'.WuiXml::cdata(WuiEventsCall::buildEventsCallString('', array(array('view', 'editrepository', array('id' => $reps_query->getFields('id')))))).'</action></args></button>';	
 
 			if (file_exists(InnomaticContainer::instance('innomaticcontainer')->getHome().'core/applications/appcentral-server/repository_'.$reps_query->getFields('id').'.log')) {
-				$main_tb['log'] = array('label' => $gLocale->getStr('repository_log.button'), 'horiz' => true, 'themeimage' => 'toggle_log', 'action' => WuiEventsCall::buildEventsCallString('', array(array('view', 'repositorylog', array('id' => $reps_query->getFields('id'))))));
+				$toolbar .= '<button><name>log</name><args>
+					<label>'.WuiXml::cdata($gLocale->getStr('repository_log.button')).'</label>
+					<themeimage>toggle_log</themeimage>
+					<horiz>true</horiz>
+					<action>'.WuiXml::cdata(WuiEventsCall::buildEventsCallString('', array(array('view', 'repositorylog', array('id' => $reps_query->getFields('id')))))).'</action></args></button>';				
 			}
 
-			$main_tb['remove'] = array('label' => $gLocale->getStr('remove_repository.button'), 'horiz' => true, 'needconfirm' => 'true', 'confirmmessage' => $gLocale->getStr('remove_repository.confirm'), 'themeimage' => 'edittrash', 'action' => WuiEventsCall::buildEventsCallString('', array(array('view', 'default', ''), array('action', 'removerepository', array('id' => $reps_query->getFields('id'))))));
-
+			$toolbar .= '<button><name>remove</name><args>
+					<label>'.WuiXml::cdata($gLocale->getStr('remove_repository.button')).'</label>
+							<needconfirm>true</needconfirm>
+							<confirmmessage>'.WuiXml::cdata($gLocale->getStr('remove_repository.confirm')).'</confirmmessage>
+					<themeimage>edittrash</themeimage>
+					<horiz>true</horiz>
+					<action>'.WuiXml::cdata(WuiEventsCall::buildEventsCallString('', array(array('view', 'default', ''), array('action', 'removerepository', array('id' => $reps_query->getFields('id')))))).'</action></args></button>';
+							
+			$toolbar .= '</children></horizgroup>';
+			
 			$gXml_def.= '<label row="'.$row.'" col="0"><name>name</name>
 			  <args>
 			    <label type="encoded">'.urlencode($reps_query->getFields('name')).'</label>
@@ -235,13 +260,7 @@ function main_default($eventData) {
 			  <args>
 			    <label type="encoded">'.urlencode($reps_query->getFields('description')).'</label>
 			  </args>
-			</label>
-			<innomatictoolbar row="'.$row.'" col="2"><name>tb</name>
-			  <args>
-			    <toolbars type="array">'.WuiXml::encode(array('view' => $main_tb)).'</toolbars>
-			    <frame>false</frame>
-			  </args>
-			</innomatictoolbar>';
+			</label>'.$toolbar;
 			$row ++;
 			$reps_query->moveNext();
 		}
@@ -433,7 +452,29 @@ function main_repositoryapplications($eventData) {
 
 	$headers[0]['label'] = $gLocale->getStr('unavailable_applications.label');
 	$headers[1]['label'] = $gLocale->getStr('available_applications.label');
-
+	
+	$toolbar = '<horizgroup row="1" col="0"><children>';
+		
+	$toolbar .= '<button><name>disable</name><args>
+					<label>'.WuiXml::cdata($gLocale->getStr('enable_applications.button')).'</label>
+					<themeimage>forward2</themeimage>
+					<horiz>true</horiz>
+							<formsubmit>unavailableapplications</formsubmit>
+					<action>'.WuiXml::cdata(WuiEventsCall::buildEventsCallString('', array(array('view', 'repositoryapplications', array('id' => $eventData['id'])), array('action', 'enableapplications', array('repid' => $eventData['id']))))).'</action></args></button>';
+				
+	$toolbar .= '</children></horizgroup>';
+	
+	$toolbar_b = '<horizgroup row="1" col="1"><children>';
+	
+	$toolbar_b .= '<button><name>enable</name><args>
+					<label>'.WuiXml::cdata($gLocale->getStr('disable_applications.button')).'</label>
+					<themeimage>back2</themeimage>
+							<formsubmit>availableapplications</formsubmit>
+					<horiz>true</horiz>
+					<action>'.WuiXml::cdata(WuiEventsCall::buildEventsCallString('', array(array('view', 'repositoryapplications', array('id' => $eventData['id'])), array('action', 'disableapplications', array('repid' => $eventData['id']))))).'</action></args></button>';
+	
+	$toolbar_b .= '</children></horizgroup>';
+	
 	$gXml_def = '<vertgroup><name>applications</name>
 	  <args>
 	    <align>center</align>
@@ -468,12 +509,7 @@ function main_repositoryapplications($eventData) {
 	          </children>
 	        </form>
 	
-	        <innomatictoolbar row="1" col="0"><name>tb</name>
-	          <args>
-	            <toolbars type="array">'.WuiXml::encode(array('view' => array('enable' => array('label' => $gLocale->getStr('enable_applications.button'), 'horiz' => true, 'themeimage' => 'forward2', 'horiz' => 'true', 'formsubmit' => 'unavailableapplications', 'action' => WuiEventsCall::buildEventsCallString('', array(array('view', 'repositoryapplications', array('id' => $eventData['id'])), array('action', 'enableapplications', array('repid' => $eventData['id'])))))))).'</toolbars>
-	            <frame>false</frame>
-	          </args>
-	        </innomatictoolbar>
+	        '.$toolbar.'
 	
 	        <form row="0" col="1"><name>availableapplications</name>
 	          <args>
@@ -492,12 +528,7 @@ function main_repositoryapplications($eventData) {
 	          </children>
 	        </form>
 	
-	        <innomatictoolbar row="1" col="1"><name>tb</name>
-	          <args>
-	            <toolbars type="array">'.WuiXml::encode(array('view' => array('enable' => array('label' => $gLocale->getStr('disable_applications.button'), 'horiz' => true, 'themeimage' => 'back2', 'horiz' => 'true', 'formsubmit' => 'availableapplications', 'action' => WuiEventsCall::buildEventsCallString('', array(array('view', 'repositoryapplications', array('id' => $eventData['id'])), array('action', 'disableapplications', array('repid' => $eventData['id'])))))))).'</toolbars>
-	            <frame>false</frame>
-	          </args>
-	        </innomatictoolbar>
+	        '.$toolbar_b.'
 	
 	      </children>
 	    </table>
