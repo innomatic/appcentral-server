@@ -855,7 +855,7 @@ $gMain_disp->Dispatch();
 if (strlen($gXml_def))
 	$gPage_content = new WuiXml('page', array('definition' => $gXml_def));
 
-$gWui->addChild(new WuiInnomaticPage('page', array('pagetitle' => $gPage_title, 'menu' => $gMenu, 'toolbars' => array(new WuiInnomaticToolbar('view', array('toolbars' => $gToolbars))), 'maincontent' => $gPage_content, 'status' => $gStatus)));
+$gWui->addChild(new WuiInnomaticPage('page', array('pagetitle' => $gPage_title, 'menu' => $gMenu, 'toolbars' => array(new WuiInnomaticToolbar('view', array('toolbars' => $gToolbars, 'toolbar' => 'true'))), 'maincontent' => $gPage_content, 'status' => $gStatus)));
 
 $gWui->render();
 
