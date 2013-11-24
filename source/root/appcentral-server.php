@@ -29,8 +29,6 @@ $gLocale = new LocaleCatalog(
 $gPage_content = $gStatus = $gToolbars = $gXml_def = '';
 $gPage_title = $gLocale->getStr('appcentral-server.title');
 
-$gMenu = InnomaticContainer::getRootWuiMenuDefinition(InnomaticContainer::instance('innomaticcontainer')->getLanguage());
-
 $gToolbars['repository'] = array('repository' => array('label' => $gLocale->getStr('repository.toolbar'), 'themeimage' => 'view_text', 'horiz' => true, 'action' => WuiEventsCall::buildEventsCallString('', array(array('view', 'default', '')))), 'newrepository' => array('label' => $gLocale->getStr('newrepository.toolbar'), 'horiz' => true, 'themeimage' => 'filenew', 'action' => WuiEventsCall::buildEventsCallString('', array(array('view', 'newrepository', '')))));
 
 $gToolbars['applications'] = array('applications' => array('label' => $gLocale->getStr('applications.toolbar'), 'themeimage' => 'view_detailed', 'horiz' => true, 'action' => WuiEventsCall::buildEventsCallString('', array(array('view', 'applications', '')))), 'newrepository' => array('label' => $gLocale->getStr('newapplication.toolbar'), 'horiz' => true, 'themeimage' => 'filenew', 'action' => WuiEventsCall::buildEventsCallString('', array(array('view', 'newapplication', '')))));
@@ -855,7 +853,7 @@ $gMain_disp->Dispatch();
 if (strlen($gXml_def))
 	$gPage_content = new WuiXml('page', array('definition' => $gXml_def));
 
-$gWui->addChild(new WuiInnomaticPage('page', array('pagetitle' => $gPage_title, 'menu' => $gMenu, 'toolbars' => array(new WuiInnomaticToolbar('view', array('toolbars' => $gToolbars, 'toolbar' => 'true'))), 'maincontent' => $gPage_content, 'status' => $gStatus)));
+$gWui->addChild(new WuiInnomaticPage('page', array('pagetitle' => $gPage_title, 'toolbars' => array(new WuiInnomaticToolbar('view', array('toolbars' => $gToolbars, 'toolbar' => 'true'))), 'maincontent' => $gPage_content, 'status' => $gStatus)));
 
 $gWui->render();
 
