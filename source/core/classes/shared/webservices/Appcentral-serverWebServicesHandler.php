@@ -1,6 +1,7 @@
 <?php
 
 require_once('innomatic/webservices/WebServicesHandler.php');
+require_once('innomatic/webservices/xmlrpc/XmlRpc_Client.php');
 
 class AppcentralServerWebServicesHandler extends WebServicesHandler {
 	public static function list_available_repositories() {
@@ -14,7 +15,7 @@ class AppcentralServerWebServicesHandler extends WebServicesHandler {
 			$rep_query->moveNext();
 		}
 
-		return new XmlRpcResp(php_xmlrpc_encode($reps));
+		return new XmlRpcResp(\Innomatic\Webservices\Xmlrpc\php_xmlrpc_encode($reps));
 	}
 
 	public static function list_available_applications($m) {
@@ -45,7 +46,7 @@ class AppcentralServerWebServicesHandler extends WebServicesHandler {
 
 		uasort($applications, 'appcentral_server_list_available_applications_cmp');
 
-		return new XmlRpcResp(php_xmlrpc_encode($applications));
+		return new XmlRpcResp(\Innomatic\Webservices\Xmlrpc\php_xmlrpc_encode($applications));
 	}
 
 	public static function list_available_application_versions($m) {
@@ -57,7 +58,7 @@ class AppcentralServerWebServicesHandler extends WebServicesHandler {
 		$rep = new AppCentralRepository(InnomaticContainer::instance('innomaticcontainer')->getDataAccess(), $rep_id->scalarVal(),
 		InnomaticContainer::instance('innomaticcontainer')->getWebServicesProfile().InnomaticContainer::instance('innomaticcontainer')->getWebServicesUser());
 
-		return new XmlRpcResp(php_xmlrpc_encode($rep->AvailableApplicationVersionsList($app_id->scalarVal())));
+		return new XmlRpcResp(\Innomatic\Webservices\Xmlrpc\php_xmlrpc_encode($rep->AvailableApplicationVersionsList($app_id->scalarVal())));
 	}
 
 	public static function retrieve_application($m) {

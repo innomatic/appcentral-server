@@ -3,26 +3,26 @@
 	<definition>
 		<idname>appcentral-server</idname>
 		<release>
-			<version>2.3</version>
-			<date>2013/11/24</date>
+			<version>2.3.1</version>
+			<date>2014/01/28</date>
 			<changesfile>CHANGES</changesfile>
 		</release>
 		<description>AppCentral repository server.</description>
 		<category>innomatic</category>
 		<iconfile></iconfile>
 		<dependencies>
-			<dependency>innomatic[5.0]</dependency>
+			<dependency>innomatic[6.3.0]</dependency>
 		</dependencies>
 		<options>
 			<!-- <option></option> -->
 		</options>
 		<legal>
 			<author>
-				<name>Innoteam S.r.l.</name>
+				<name>Innoteam Srl</name>
 				<email>info@innoteam.it</email>
 				<web>http://www.innoteam.it/</web>
 			</author>
-			<copyright>Copyright (c) 2000-2013 Innoteam Srl</copyright>
+			<copyright>Copyright (c) 2000-2014 Innoteam Srl</copyright>
 			<license>Commercial</license>
 			<licensefile>LICENSE</licensefile>
 		</legal>

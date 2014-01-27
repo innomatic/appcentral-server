@@ -18,7 +18,7 @@ class AppCentralRepository {
 		$this->mrRootDb = & $rrootDb;
 
 		if ($repId) {
-			$rep_query = & $this->mrRootDb->execute('SELECT name,description,logevents '.'FROM appcentral_reps '.'WHERE id='.$repId);
+			$rep_query = $this->mrRootDb->execute('SELECT name,description,logevents '.'FROM appcentral_reps '.'WHERE id='.$repId);
 
 			if ($rep_query->getNumberRows()) {
 				$this->mId = $repId;
@@ -28,7 +28,7 @@ class AppCentralRepository {
 				$this->mUser = $user;
 				$this->mLogEvents = $rep_query->getFields('logevents') == $this->mrRootDb->fmttrue ? true : false;
 				if ($this->mLogEvents) {
-					$this->mLogFile = InnomaticContainer::instance('innomaticcontainer')->getHome().'core/applications/'.'appcentral-server/repository_'.$this->mId.'.log';
+					$this->mLogFile = \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getHome().'core/applications/'.'appcentral-server/repository_'.$this->mId.'.log';
 					$this->mLogHandler = new Logger($this->mLogFile);
 				}
 			}
@@ -46,7 +46,7 @@ class AppCentralRepository {
 			$this->mDescription = $repDescription;
 			$this->mLogEvents = $repLogEvents;
 			if ($this->mLogEvents) {
-				$this->mLogFile = InnomaticContainer::instance('innomaticcontainer')->getHome().'core/applications/'.'appcentral-server/repository_'.$this->mId.'.log';
+				$this->mLogFile = \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getHome().'core/applications/'.'appcentral-server/repository_'.$this->mId.'.log';
 				$this->mLogHandler = new Logger($this->mLogFile);
 			}
 
@@ -144,7 +144,7 @@ class AppCentralRepository {
 	function EnableApplication($appId) {
 		$result = false;
 
-		$app_check = & $this->mrRootDb->execute('SELECT applicationid '.'FROM appcentral_reps_applications '.'WHERE repositoryid='.$this->mId.' '.'AND applicationid='.$appId);
+		$app_check = $this->mrRootDb->execute('SELECT applicationid '.'FROM appcentral_reps_applications '.'WHERE repositoryid='.$this->mId.' '.'AND applicationid='.$appId);
 
 		if ($app_check->getNumberRows() == 0) {
 			if ($this->mrRootDb->execute('INSERT INTO appcentral_reps_applications '.'VALUES('.$this->mId.','.$appId.')'))
@@ -168,9 +168,9 @@ class AppCentralRepository {
 		$result = array();
 
 		if ($this->mProfileId) {
-			$app_query = & $this->mrRootDb->execute('SELECT appcentral_reps_applications.applicationid AS applicationid '.'FROM appcentral_reps_applications, appcentral_reps_access '.'WHERE appcentral_reps_applications.repositoryid='.$this->mId.' '.'AND appcentral_reps_applications.repositoryid=appcentral_reps_access.repositoryid '.'AND appcentral_reps_access.profileid='.$this->mProfileId);
+			$app_query = $this->mrRootDb->execute('SELECT appcentral_reps_applications.applicationid AS applicationid '.'FROM appcentral_reps_applications, appcentral_reps_access '.'WHERE appcentral_reps_applications.repositoryid='.$this->mId.' '.'AND appcentral_reps_applications.repositoryid=appcentral_reps_access.repositoryid '.'AND appcentral_reps_access.profileid='.$this->mProfileId);
 		} else {
-			$app_query = & $this->mrRootDb->execute('SELECT applicationid '.'FROM appcentral_reps_applications '.'WHERE repositoryid='.$this->mId);
+			$app_query = $this->mrRootDb->execute('SELECT applicationid '.'FROM appcentral_reps_applications '.'WHERE repositoryid='.$this->mId);
 		}
 
 		while (!$app_query->eof) {
@@ -188,7 +188,7 @@ class AppCentralRepository {
 		$versions = $app->GetVersionsList(true);
 
 		while (list (, $version) = each($versions)) {
-			$version_query = & $this->mrRootDb->execute('SELECT * '.'FROM appcentral_applications_versions '.'WHERE applicationid='.$applicationId.' '.'AND version='.$this->mrRootDb->formatText($version));
+			$version_query = $this->mrRootDb->execute('SELECT * '.'FROM appcentral_applications_versions '.'WHERE applicationid='.$applicationId.' '.'AND version='.$this->mrRootDb->formatText($version));
 
 			$result[$version]['date'] = $version_query->getFields('date');
 			$result[$version]['dependencies'] = $version_query->getFields('dependencies');
@@ -202,9 +202,9 @@ class AppCentralRepository {
 		$result = false;
 
 		if ($this->mProfileId) {
-			$app_query = & $this->mrRootDb->execute('SELECT applicationid '.'FROM appcentral_reps_access,appcentral_reps_applications '.'WHERE appcentral_reps_access.profileid='.$this->mProfileId.' '.'AND appcentral_reps_access.repositoryid=appcentral_reps_applications.repositoryid '.'AND appcentral_reps_applications.applicationid='.$applicationId);
+			$app_query = $this->mrRootDb->execute('SELECT applicationid '.'FROM appcentral_reps_access,appcentral_reps_applications '.'WHERE appcentral_reps_access.profileid='.$this->mProfileId.' '.'AND appcentral_reps_access.repositoryid=appcentral_reps_applications.repositoryid '.'AND appcentral_reps_applications.applicationid='.$applicationId);
 		} else {
-			$app_query = & $this->mrRootDb->execute('SELECT applicationid '.'FROM appcentral_reps_applications '.'WHERE repositoryid='.$this->mId.' '.'AND applicationid='.$applicationId);
+			$app_query = $this->mrRootDb->execute('SELECT applicationid '.'FROM appcentral_reps_applications '.'WHERE repositoryid='.$this->mId.' '.'AND applicationid='.$applicationId);
 		}
 
 		if ($app_query->getNumberRows())
@@ -232,7 +232,7 @@ class AppCentralRepository {
 	function EnableProfile($profileId) {
 		$result = false;
 
-		$profile_check = & $this->mrRootDb->execute('SELECT profileid '.'FROM appcentral_reps_access '.'WHERE repositoryid='.$this->mId.' '.'AND profileid='.$profileId);
+		$profile_check = $this->mrRootDb->execute('SELECT profileid '.'FROM appcentral_reps_access '.'WHERE repositoryid='.$this->mId.' '.'AND profileid='.$profileId);
 
 		if ($profile_check->getNumberRows() == 0) {
 			if ($this->mrRootDb->execute('INSERT INTO appcentral_reps_access '.'VALUES('.$this->mId.','.$profileId.')'))
@@ -255,7 +255,7 @@ class AppCentralRepository {
 	function AvailableProfilesList() {
 		$result = array();
 
-		$profile_query = & $this->mrRootDb->execute('SELECT profileid '.'FROM appcentral_reps_access '.'WHERE repositoryid='.$this->mId);
+		$profile_query = $this->mrRootDb->execute('SELECT profileid '.'FROM appcentral_reps_access '.'WHERE repositoryid='.$this->mId);
 
 		while (!$profile_query->eof) {
 			$result[] = $profile_query->getFields('profileid');
@@ -268,7 +268,7 @@ class AppCentralRepository {
 	function CheckProfile($profileId) {
 		$result = false;
 
-		$profile_query = & $this->mrRootDb->execute('SELECT profileid '.'FROM appcentral_reps_access '.'WHERE repositoryid='.$this->mId.' '.'AND profileid='.$profileId);
+		$profile_query = $this->mrRootDb->execute('SELECT profileid '.'FROM appcentral_reps_access '.'WHERE repositoryid='.$this->mId.' '.'AND profileid='.$profileId);
 
 		if ($profile_query->getNumberRows())
 			$result = true;
