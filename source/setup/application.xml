@@ -3,8 +3,8 @@
 	<definition>
 		<idname>appcentral-server</idname>
 		<release>
-			<version>2.2</version>
-			<date>2009/02/26</date>
+			<version>2.3</version>
+			<date>2013/11/24</date>
 			<changesfile>CHANGES</changesfile>
 		</release>
 		<description>AppCentral repository server.</description>
@@ -18,17 +18,17 @@
 		</options>
 		<legal>
 			<author>
-				<name>Innoteam</name>
-				<email>info@innomatic.org</email>
-				<web>http://www.innomatic.org/</web>
+				<name>Innoteam S.r.l.</name>
+				<email>info@innoteam.it</email>
+				<web>http://www.innoteam.it/</web>
 			</author>
-			<copyright>Copyright (c) 2000-2009 Innoteam</copyright>
+			<copyright>Copyright (c) 2000-2013 Innoteam Srl</copyright>
 			<license>Commercial</license>
 			<licensefile>LICENSE</licensefile>
 		</legal>
 		<support>
-			<supportemail>support@innomatic.org</supportemail>
-			<bugsemail>bugs@innomatic.org</bugsemail>
+			<supportemail>helpdesk@innoteam.it</supportemail>
+			<bugsemail>helpdesk@innoteam.it</bugsemail>
 			<maintainer>
 				<name>Alex Pagnoni</name>
 				<email>alex.pagnoni@innoteam.it</email>
@@ -38,10 +38,13 @@
 
 	<components>
 
+		<rootgroup name="appcentral"
+			catalog="appcentral-server::misc" />
+
 		<rootpanel name="appcentral-server"
 			file="appcentral-server.php" themeicon="nfs_unmount"
 			themeicontype="devices" catalog="appcentral-server::misc"
-			category="innomatic" />
+			category="appcentral" />
 
 		<class name="appcentral/server/AppCentralApplication.php" />
 		<class name="appcentral/server/AppCentralRepository.php" />
