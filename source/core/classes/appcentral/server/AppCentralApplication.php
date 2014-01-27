@@ -9,7 +9,7 @@ class AppCentralApplication {
 	var $mCategory;
 
 	public function __construct($rrootDb, $applicationId = 0) {
-		$this->mrRootDb = & $rrootDb;
+		$this->mrRootDb = $rrootDb;
 
 		if ($applicationId) {
 			$app_query = $this->mrRootDb->execute('SELECT appid,description,lastversion,category FROM appcentral_applications WHERE id='.$applicationId);
@@ -70,7 +70,7 @@ class AppCentralApplication {
 		$result = false;
 
 		if (file_exists($filePath)) {
-			$orig_tmp_dir = $tmp_dir = InnomaticContainer::instance('innomaticcontainer')->getHome().'core/temp/appcentral-server/'.md5(uniqid(rand()));
+			$orig_tmp_dir = $tmp_dir = \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getHome().'core/temp/appcentral-server/'.md5(uniqid(rand()));
 			mkdir($tmp_dir);
 
 			require_once('innomatic/io/archive/Archive.php');
@@ -141,7 +141,7 @@ class AppCentralApplication {
 					$this->SetCategory($app_category);
 				}
 
-				@copy($filePath, InnomaticContainer::instance('innomaticcontainer')->getHome().'core/applications/appcentral-server/'.$app_name.'-'.$app_version.'.tgz');
+				@copy($filePath, \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getHome().'core/applications/appcentral-server/'.$app_name.'-'.$app_version.'.tgz');
 				$result = true;
 			}
 
@@ -164,11 +164,11 @@ class AppCentralApplication {
 			$this->mLastVersion = '';
 			$this->UpdateLastVersion();
 
-			@unlink(InnomaticContainer::instance('innomaticcontainer')->getHome().'core/applications/appcentral-server/'.$this->mApplication.'-'.$version.'.tgz');
+			@unlink(\Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getHome().'core/applications/appcentral-server/'.$this->mApplication.'-'.$version.'.tgz');
 			$result = true;
 
 			if ($applicationCheck) {
-				$appcheck_query = & $this->mrRootDb->execute('SELECT version FROM appcentral_applications_versions WHERE applicationid='.$this->mId);
+				$appcheck_query = $this->mrRootDb->execute('SELECT version FROM appcentral_applications_versions WHERE applicationid='.$this->mId);
 
 				if ($appcheck_query->getNumberRows() == 0) {
 					$this->Remove(false);
@@ -198,7 +198,7 @@ class AppCentralApplication {
 		if (!$version)
 			$version = $this->mLastVersion;
 
-		$vers_query = & $this->mrRootDb->execute('SELECT * FROM appcentral_applications_versions WHERE applicationid='.$this->mId.' AND version='.$this->mrRootDb->formatText($version));
+		$vers_query = $this->mrRootDb->execute('SELECT * FROM appcentral_applications_versions WHERE applicationid='.$this->mId.' AND version='.$this->mrRootDb->formatText($version));
 
 		if ($vers_query->getNumberRows()) {
 			$result = $vers_query->getFields();
@@ -213,10 +213,10 @@ class AppCentralApplication {
 		if (!$version)
 			$version = $this->mLastVersion;
 
-		$versioncheck_query = & $this->mrRootDb->execute('SELECT version FROM appcentral_applications_versions WHERE applicationid='.$this->mId.' AND version='.$this->mrRootDb->formatText($version));
+		$versioncheck_query = $this->mrRootDb->execute('SELECT version FROM appcentral_applications_versions WHERE applicationid='.$this->mId.' AND version='.$this->mrRootDb->formatText($version));
 
 		if ($versioncheck_query->getNumberRows()) {
-			$app_file = InnomaticContainer::instance('innomaticcontainer')->getHome().'core/applications/appcentral-server/'.$this->mApplication.'-'.$version.'.tgz';
+			$app_file = \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getHome().'core/applications/appcentral-server/'.$this->mApplication.'-'.$version.'.tgz';
 
 			if (file_exists($app_file)) {
 				if ($fh = fopen($app_file, 'rb')) {

@@ -2,6 +2,13 @@
                                =======
 
 
+2.3.1 - 2014/01/28
+------------------
+CHANGES:
+- Updated to Innomatic 6.3.0 xmlrpc support with namespaces. (Alex Pagnoni)
+
+
+
 2.3 - 2013/11/24
 ----------------
 CHANGES:
