@@ -2,7 +2,7 @@
 <project name="AppCentral Server" basedir="source" default="package">
 
 	<property name="name" value="appcentral-server" />
-	<property name="version" value="2.3.1" />
+	<property name="version" value="2.3.2" />
 
 	<target name="sources">
 		<tar destfile="../build/${name}-src-${version}.tgz" compression="gzip">

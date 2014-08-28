@@ -1,6 +1,6 @@
 <?php
 
-require_once('innomatic/webservices/xmlrpc/XmlRpc_Client.php');
+require_once('innomatic/webservices/xmlrpc/XmlRpcClient.php');
 
 class AppcentralServerWebServicesHandler extends \Innomatic\Webservices\WebServicesHandler {
 	public static function list_available_repositories() {
