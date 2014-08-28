@@ -3,15 +3,15 @@
 	<definition>
 		<idname>appcentral-server</idname>
 		<release>
-			<version>2.3.1</version>
-			<date>2014/01/28</date>
+			<version>2.3.2</version>
+			<date>2014/08/28</date>
 			<changesfile>CHANGES</changesfile>
 		</release>
 		<description>AppCentral repository server.</description>
 		<category>innomatic</category>
 		<iconfile></iconfile>
 		<dependencies>
-			<dependency>innomatic[6.3.0]</dependency>
+			<dependency>innomatic[6.4.0]</dependency>
 		</dependencies>
 		<options>
 			<!-- <option></option> -->
@@ -20,18 +20,18 @@
 			<author>
 				<name>Innoteam Srl</name>
 				<email>info@innoteam.it</email>
-				<web>http://www.innoteam.it/</web>
+				<web>http://www.innomaticplatform.com/</web>
 			</author>
 			<copyright>Copyright (c) 2000-2014 Innoteam Srl</copyright>
 			<license>Commercial</license>
 			<licensefile>LICENSE</licensefile>
 		</legal>
 		<support>
-			<supportemail>helpdesk@innoteam.it</supportemail>
-			<bugsemail>helpdesk@innoteam.it</bugsemail>
+			<supportemail>helpdesk@innomatic.io</supportemail>
+			<bugsemail>helpdesk@innomatic.io</bugsemail>
 			<maintainer>
 				<name>Alex Pagnoni</name>
-				<email>alex.pagnoni@innoteam.it</email>
+				<email>alex.pagnoni@innomatic.io</email>
 			</maintainer>
 		</support>
 	</definition>

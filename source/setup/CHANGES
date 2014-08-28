@@ -2,6 +2,13 @@
                                =======
 
 
+2.3.2 - 2014/08/28
+------------------
+CHANGES:
+- Updated to Innomatic 6.4.0 xmlrpc support. (Alex Pagnoni)
+
+
+
 2.3.1 - 2014/01/28
 ------------------
 CHANGES:
