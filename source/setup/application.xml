@@ -3,7 +3,7 @@
 	<definition>
 		<idname>appcentral-server</idname>
 		<release>
-			<version>2.3.2</version>
+			<version>2.4.0</version>
 			<date>2014/08/28</date>
 			<changesfile>CHANGES</changesfile>
 		</release>
@@ -46,8 +46,8 @@
 			themeicontype="devices" catalog="appcentral-server::misc"
 			category="appcentral" />
 
-		<class name="appcentral/server/AppCentralApplication.php" />
-		<class name="appcentral/server/AppCentralRepository.php" />
+		<class name="appcentral/server/Application.php" />
+		<class name="appcentral/server/Repository.php" />
 
 		<catalog name="appcentral-server" />
 

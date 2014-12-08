@@ -1,5 +1,7 @@
 <?php
 
+use \Appcentral\Server;
+
 require_once('innomatic/webservices/xmlrpc/XmlRpcClient.php');
 
 class AppcentralServerWebServicesHandler extends \Innomatic\Webservices\WebServicesHandler {
@@ -18,11 +20,9 @@ class AppcentralServerWebServicesHandler extends \Innomatic\Webservices\WebServi
 	}
 
 	public static function list_available_applications($m) {
-		require_once('appcentral/server/AppCentralRepository.php');
-
 		$rep_id = $m->GetParam(0);
-		$rep = new AppCentralRepository(\Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getDataAccess(), $rep_id->scalarVal(), \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getWebServicesProfile(), \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getWebServicesUser());
-		$avail_applications = $rep->AvailableApplicationsList();
+		$rep = new Repository($rep_id->scalarVal(), \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getWebServicesProfile(), \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getWebServicesUser());
+		$avail_applications = $rep->availableApplicationsList();
 
 		$applications = array();
 		while (list (, $id) = each($avail_applications)) {
@@ -49,48 +49,41 @@ class AppcentralServerWebServicesHandler extends \Innomatic\Webservices\WebServi
 	}
 
 	public static function list_available_application_versions($m) {
-		require_once('appcentral/server/AppCentralRepository.php');
-
 		$rep_id = $m->GetParam(0);
 		$app_id = $m->GetParam(1);
 
-		$rep = new AppCentralRepository(\Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getDataAccess(), $rep_id->scalarVal(),
+		$rep = new Repository($rep_id->scalarVal(),
 		\Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getWebServicesProfile().\Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getWebServicesUser());
 
 		return new XmlRpcResp(\Innomatic\Webservices\Xmlrpc\php_xmlrpc_encode($rep->AvailableApplicationVersionsList($app_id->scalarVal())));
 	}
 
 	public static function retrieve_application($m) {
-		require_once('appcentral/server/AppCentralRepository.php');
-
 		$rep_id = $m->GetParam(0);
 		$app_id = $m->GetParam(1);
 		$app_version = $m->GetParam(2);
 		$profile_id = $m->GetParam(3);
 
-		$rep = new AppCentralRepository(\Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getDataAccess(), $rep_id->scalarVal(),
+		$rep = new Repository($rep_id->scalarVal(),
 		\Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getWebServicesProfile(), \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getWebServicesUser());
 
 		return new XmlRpcResp(new XmlRpcVal($rep->SendApplication($app_id->scalarVal(), $app_version->scalarVal()), 'base64'));
 	}
 
 	public static function retrieve_appcentral_client() {
-		require_once('appcentral/server/AppCentralApplication.php');
-		require_once('innomatic/logging/Logger.php');
-
 		$app_query = \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getDataAccess()->execute('SELECT id FROM appcentral_applications WHERE appid='.\Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getDataAccess()->formatText('appcentral-client'));
 
 		//if ( $app_query->getNumberRows() )
 		//{
-		$application = new AppCentralApplication(\Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getDataAccess(), $app_query->getFields('id'));
+		$application = new Application($app_query->getFields('id'));
 		$result = $application->Retrieve($version);
 
 		$log = \Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getLogger();
-		$log->logEvent('appcentral-server', 'Sent AppCentral Client to remote address '.$_SERVER['REMOTE_ADDR'], Logger::NOTICE);
+		$log->logEvent('appcentral-server', 'Sent AppCentral Client to remote address '.$_SERVER['REMOTE_ADDR'], \Innomatic\Logging\Logger::NOTICE);
 
 		//if ( $result ) $this->logEvent( 'Sent application '.$application->mApplication.' to user '.$this->mUser );
 
-		return new XmlRpcResp(new XmlRpcVal($application->Retrieve(), 'base64'));
+		return new XmlRpcResp(new XmlRpcVal($application->retrieve(), 'base64'));
 	}
 }
 ?>

@@ -1,18 +1,13 @@
 <?php
 
+use \Appcentral\Server\Application;
+use \Appcentral\Server\Repository;
+use \Innomatic\Wui;
+use \Innomatic\Wui\Widgets;
+use \Innomatic\Wui\Dispatch;
+
 // Initialization
 //
-
-require_once('innomatic/wui/Wui.php');
-require_once('innomatic/wui/widgets/WuiWidget.php');
-require_once('innomatic/wui/widgets/WuiContainerWidget.php');
-require_once('innomatic/wui/dispatch/WuiEventsCall.php');
-require_once('innomatic/wui/dispatch/WuiEvent.php');
-require_once('innomatic/wui/dispatch/WuiEventRawData.php');
-require_once('innomatic/wui/dispatch/WuiDispatcher.php');
-require_once('appcentral/server/AppCentralRepository.php');
-require_once('appcentral/server/AppCentralApplication.php');
-
 global $gLocale, $gXml_def, $gPage_title, $gStatus;
 	
 $gWui = Wui::instance('wui');
@@ -41,7 +36,7 @@ $gAction_disp->addEvent('newrepository', 'action_newrepository');
 function action_newrepository($eventData) {
 	global $gLocale, $gStatus;
 
-	$rep = new AppCentralRepository(\Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getDataAccess());
+	$rep = new Repository();
 	if ($rep->Create($eventData['name'], $eventData['description'], $eventData['logevents'] == 'on' ? true : false))
 		$gStatus = $gLocale->getStr('repository_created.status');
 	else
@@ -52,7 +47,7 @@ $gAction_disp->addEvent('editrepository', 'action_editrepository');
 function action_editrepository($eventData) {
 	global $gLocale, $gStatus;
 
-	$rep = new AppCentralRepository(\Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getDataAccess(), $eventData['id']);
+	$rep = new Repository($eventData['id']);
 	$rep->SetName($eventData['name']);
 	$rep->SetDescription($eventData['description']);
 	$rep->SetLogEvents($eventData['logevents'] == 'on' ? true : false);
@@ -63,7 +58,7 @@ $gAction_disp->addEvent('removerepository', 'action_removerepository');
 function action_removerepository($eventData) {
 	global $gLocale, $gStatus;
 
-	$rep = new AppCentralRepository(\Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getDataAccess(), $eventData['id']);
+	$rep = new Repository($eventData['id']);
 	if ($rep->Remove())
 		$gStatus = $gLocale->getStr('repository_removed.status');
 	else
@@ -74,7 +69,7 @@ $gAction_disp->addEvent('eraselog', 'action_eraselog');
 function action_eraselog($eventData) {
 	global $gLocale, $gStatus;
 
-	$rep = new AppCentralRepository(\Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getDataAccess(), $eventData['id']);
+	$rep = new Repository($eventData['id']);
 	if ($rep->EraseLog())
 		$gStatus = $gLocale->getStr('log_erased.status');
 	else
@@ -85,7 +80,7 @@ $gAction_disp->addEvent('enableapplications', 'action_enableapplications');
 function action_enableapplications($eventData) {
 	global $gLocale, $gStatus;
 
-	$rep = new AppCentralRepository(\Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getDataAccess(), $eventData['repid']);
+	$rep = new Repository($eventData['repid']);
 
 	if (isset($eventData['applications']) and is_array($eventData['applications'])) {
 		while (list (, $id) = each($eventData['applications'])) {
@@ -98,7 +93,7 @@ $gAction_disp->addEvent('disableapplications', 'action_disableapplications');
 function action_disableapplications($eventData) {
 	global $gLocale, $gStatus;
 
-	$rep = new AppCentralRepository(\Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getDataAccess(), $eventData['repid']);
+	$rep = new Repository($eventData['repid']);
 
 	if (isset($eventData['applications']) and is_array($eventData['applications'])) {
 		while (list (, $id) = each($eventData['applications'])) {
@@ -111,7 +106,7 @@ $gAction_disp->addEvent('enableprofiles', 'action_enableprofiles');
 function action_enableprofiles($eventData) {
 	global $gLocale, $gStatus;
 
-	$rep = new AppCentralRepository(\Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getDataAccess(), $eventData['repid']);
+	$rep = new Repository($eventData['repid']);
 
 	if (isset($eventData['profiles']) and is_array($eventData['profiles'])) {
 		while (list (, $id) = each($eventData['profiles'])) {
@@ -124,7 +119,7 @@ $gAction_disp->addEvent('disableprofiles', 'action_disableprofiles');
 function action_disableprofiles($eventData) {
 	global $gLocale, $gStatus;
 
-	$rep = new AppCentralRepository(\Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getDataAccess(), $eventData['repid']);
+	$rep = new Repository($eventData['repid']);
 
 	if (isset($eventData['profiles']) and is_array($eventData['profiles'])) {
 		while (list (, $id) = each($eventData['profiles'])) {
@@ -139,7 +134,7 @@ $gAction_disp->addEvent('addapplication', 'action_addapplication');
 function action_addapplication($eventData) {
 	global $gLocale, $gStatus;
 
-	$app = new AppCentralApplication(\Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getDataAccess());
+	$app = new Application();
 	if ($app->AddVersion($eventData['application']['tmp_name']))
 		$gStatus = $gLocale->getStr('application_added.status');
 	else
@@ -152,7 +147,7 @@ $gAction_disp->addEvent('removeapplication', 'action_removeapplication');
 function action_removeapplication($eventData) {
 	global $gLocale, $gStatus;
 
-	$app = new AppCentralApplication(\Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getDataAccess(), $eventData['id']);
+	$app = new Application($eventData['id']);
 	if ($app->Remove())
 		$gStatus = $gLocale->getStr('application_removed.status');
 	else
@@ -163,7 +158,7 @@ $gAction_disp->addEvent('removeversion', 'action_removeversion');
 function action_removeversion($eventData) {
 	global $gLocale, $gStatus;
 
-	$app = new AppCentralApplication(\Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getDataAccess(), $eventData['id']);
+	$app = new Application($eventData['id']);
 	$app_name = $app->mApplication;
 
 	if ($app->RemoveVersion($eventData['version']))
@@ -351,7 +346,7 @@ $gMain_disp->addEvent('editrepository', 'main_editrepository');
 function main_editrepository($eventData) {
 	global $gLocale, $gXml_def, $gPage_title, $gStatus;
 
-	$rep = new AppCentralRepository(\Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getDataAccess(), $eventData['id']);
+	$rep = new Repository($eventData['id']);
 
 	$gXml_def = '<vertgroup><name>edit</name>
 	  <children>
@@ -430,7 +425,7 @@ $gMain_disp->addEvent('repositoryapplications', 'main_repositoryapplications');
 function main_repositoryapplications($eventData) {
 	global $gLocale, $gPage_title, $gXml_def;
 
-	$rep = new AppCentralRepository(\Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getDataAccess(), $eventData['id']);
+	$rep = new Repository($eventData['id']);
 
 	$avail_applications = $rep->AvailableApplicationsList();
 	$unavailable_applications = $available_applications = array();
@@ -537,7 +532,7 @@ $gMain_disp->addEvent('repositoryprofiles', 'main_repositoryprofiles');
 function main_repositoryprofiles($eventData) {
 	global $gLocale, $gPage_title, $gXml_def;
 
-	$rep = new AppCentralRepository(\Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getDataAccess(), $eventData['id']);
+	$rep = new Repository($eventData['id']);
 
 	$avail_profiles = $rep->AvailableProfilesList();
 	$unavailable_profiles = $available_profiles = array();
@@ -632,7 +627,7 @@ $gMain_disp->addEvent('repositorylog', 'main_repositorylog');
 function main_repositorylog($eventData) {
 	global $gLocale, $gPage_title, $gXml_def, $gToolbars;
 
-	$rep = new AppCentralRepository(\Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getDataAccess(), $eventData['id']);
+	$rep = new Repository($eventData['id']);
 
 	$gXml_def = '<vertgroup><name>logs</name>
 	  <children>
@@ -782,7 +777,7 @@ $gMain_disp->addEvent('applicationversions', 'main_applicationversions');
 function main_applicationversions($eventData) {
 	global $gLocale, $gPage_title, $gXml_def, $gStatus;
 
-	$application = new AppCentralApplication(\Innomatic\Core\InnomaticContainer::instance('\Innomatic\Core\InnomaticContainer')->getDataAccess(), $eventData['id']);
+	$application = new Application($eventData['id']);
 	$versions = $application->GetVersionsList(true);
 
 	$headers[0]['label'] = $gLocale->getStr('version.header');
